@@ -110,7 +110,7 @@ refactor: code refactoring
 ## Development Workflow
 
 1. Start dev server: `bun run dev`
-2. View API docs: `http://localhost:8787/docs`
+2. View API docs: `http://localhost:8789/docs`
 3. Make changes (hot reload enabled)
 4. Commit (hooks run automatically)
 5. Deploy: `bun run deploy`

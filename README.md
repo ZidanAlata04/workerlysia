@@ -42,7 +42,11 @@ cp .env.example .env
 bun run dev
 ```
 
-Open [http://localhost:8787/docs](http://localhost:8787/docs) to see the API docs - Scalar UI 🎉
+Open [http://localhost:8789/docs](http://localhost:8789/docs) to see the API docs - Scalar UI 🎉
+
+Access the OpenAPI specification:
+
+- **JSON**: [http://localhost:8789/docs/openapi.json](http://localhost:8789/docs/openapi.json)
 
 ### Deploy
 

@@ -13,11 +13,17 @@ const app = new Elysia({ adapter: CloudflareAdapter })
     openapi({
       documentation: {
         info: {
-          title: "Tasks API",
+          description:
+            "A modern starter kit for building type-safe APIs with Elysia on Cloudflare Workers",
+          license: {
+            name: "MIT",
+          },
+          title: "Workerlysia API",
           version: "1.0.0",
         },
       },
       path: "/docs",
+      specPath: "/docs/openapi.json",
     })
   )
   .use(welcomeRoute)
