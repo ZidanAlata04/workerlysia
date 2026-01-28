@@ -14,6 +14,7 @@ A modern starter kit for building **type-safe APIs** with [Elysia](https://elysi
 - 📖 **OpenAPI 3.1** - Auto-generated API documentation at `/docs`
 - 🔒 **Type Safety** - Full TypeScript support with strict mode
 - ✅ **Request Validation** - Schema-based validation using TypeBox
+- 🔌 **KV-Powered Plugins** - Built-in cache and rate limiting using Cloudflare KV
 - 🛠️ **Ultracite** - Zero-config linting & formatting (Oxlint + Oxfmt)
 - 🪝 **Git Hooks** - Husky + Commitlint for automated quality checks
 - ⚡ **Bun Runtime** - Fast package manager and test runner
@@ -42,11 +43,11 @@ cp .env.example .env
 bun run dev
 ```
 
-Open [http://localhost:8789/docs](http://localhost:8789/docs) to see the API docs - Scalar UI 🎉
+Open [http://localhost:8787/docs](http://localhost:8787/docs) to see the API docs - Scalar UI 🎉
 
 Access the OpenAPI specification:
 
-- **JSON**: [http://localhost:8789/docs/openapi.json](http://localhost:8789/docs/openapi.json)
+- **JSON**: [http://localhost:8787/docs/openapi.json](http://localhost:8787/docs/openapi.json)
 
 ### Deploy
 
@@ -63,12 +64,13 @@ bun run deploy
 ```
 src/
 ├── index.ts              # 🏠 App entrypoint - registers routes & plugins
+├── plugins/              # 🔌 Reusable Elysia plugins
+│   ├── cache.ts          # Response caching with KV
+│   └── rate-limit.ts     # Rate limiting with KV
 ├── routes/               # 📍 API route handlers
-│   └── tasks/
-│       ├── create-task.ts
-│       ├── delete-task.ts
-│       ├── get-task.ts
-│       └── list-tasks.ts
+│   ├── demo/             # Demo routes for plugins
+│   ├── storage/          # KV, D1, R2 example routes
+│   └── tasks/            # Task CRUD routes
 └── schemas/              # 📐 Validation schemas (TypeBox)
     └── task.ts
 ```
@@ -159,24 +161,145 @@ const app = new Elysia({ adapter: CloudflareAdapter })
 
 ## ☁️ Cloudflare Bindings
 
-Configure bindings (KV, D1, R2, etc.) in `wrangler.jsonc`:
+This starter includes pre-configured bindings for KV, D1, and R2. To set up your own:
+
+```bash
+# Login to Cloudflare (first time only)
+bunx wrangler login
+```
+
+### KV (Key-Value Storage)
+
+```bash
+bunx wrangler kv namespace create KV
+```
+
+Update `wrangler.jsonc` with the generated `id`:
 
 ```jsonc
 {
-  "kv_namespaces": [{ "binding": "MY_KV", "id": "xxx" }],
+  "kv_namespaces": [{ "binding": "KV", "id": "your-namespace-id" }],
+}
+```
+
+**Usage:**
+
+```typescript
+export const myRoute = new Elysia().get("/kv-example", async ({ env }) => {
+  await env.KV.put("key", "value");
+  const value = await env.KV.get("key");
+  return { value };
+});
+```
+
+### D1 (SQL Database)
+
+```bash
+bunx wrangler d1 create my-database
+```
+
+Update `wrangler.jsonc` with the generated `database_id`:
+
+```jsonc
+{
   "d1_databases": [
-    { "binding": "MY_DB", "database_name": "my-db", "database_id": "xxx" },
+    {
+      "binding": "DB",
+      "database_name": "my-database",
+      "database_id": "your-database-id",
+    },
   ],
 }
 ```
 
-Generate types after adding bindings:
+**Usage:**
+
+```typescript
+export const myRoute = new Elysia().get("/db-example", async ({ env }) => {
+  const { results } = await env.DB.prepare("SELECT * FROM users").all();
+  return { users: results };
+});
+```
+
+### R2 (Object Storage)
+
+```bash
+bunx wrangler r2 bucket create my-bucket
+```
+
+Update `wrangler.jsonc`:
+
+```jsonc
+{
+  "r2_buckets": [{ "binding": "BUCKET", "bucket_name": "my-bucket" }],
+}
+```
+
+**Usage:**
+
+```typescript
+export const myRoute = new Elysia().get("/r2-example", async ({ env }) => {
+  await env.BUCKET.put("file.txt", "Hello, World!");
+  const object = await env.BUCKET.get("file.txt");
+  return { content: await object?.text() };
+});
+```
+
+### Regenerate Types
+
+Always run this after modifying bindings in `wrangler.jsonc`:
 
 ```bash
 bun run cf-typegen
 ```
 
-Access bindings in your routes via the Elysia context.
+## 🔌 Plugins
+
+This starter includes two KV-powered plugins that can be enabled per-route using Elysia macros.
+
+### Cache Plugin
+
+Cache responses in Cloudflare KV with configurable TTL.
+
+```typescript
+import { cachePlugin } from "./plugins/cache";
+
+new Elysia()
+  .use(cachePlugin())
+  .get("/data", () => fetchExpensiveData(), {
+    cache: 300, // Cache for 300 seconds
+  })
+  .get("/no-cache", () => getData()); // No caching (macro not defined)
+```
+
+**Response headers:**
+
+- `x-cache: HIT` - Served from cache
+- `x-cache: MISS` - Fresh response, now cached
+
+### Rate Limit Plugin
+
+Limit requests per client using Cloudflare KV.
+
+```typescript
+import { rateLimitPlugin } from "./plugins/rate-limit";
+
+new Elysia()
+  .use(rateLimitPlugin())
+  .get("/api/data", () => getData(), {
+    rateLimit: { max: 100, window: 60 }, // 100 requests per 60 seconds
+  })
+  .get("/public", () => getPublic()); // No rate limiting (macro not defined)
+```
+
+**Response headers:**
+
+- `x-ratelimit-limit` - Maximum requests allowed
+- `x-ratelimit-remaining` - Requests remaining in window
+- `x-ratelimit-reset` - Seconds until window resets
+- `retry-after` - Seconds to wait (when rate limited)
+
+**Note:** Cloudflare KV has a minimum TTL of 60 seconds.
 
 ## 📚 Resources
 

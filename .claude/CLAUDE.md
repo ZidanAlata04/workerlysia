@@ -28,12 +28,13 @@ A **Cloudflare Worker** API built with **Elysia** framework and **Bun** runtime.
 ```
 src/
 ├── index.ts           # App entrypoint - registers routes and plugins
+├── plugins/           # Reusable Elysia plugins (macros)
+│   ├── cache.ts       # Response caching with KV
+│   └── rate-limit.ts  # Rate limiting with KV
 ├── routes/            # API route handlers (one file per endpoint)
-│   └── tasks/
-│       ├── create-task.ts
-│       ├── delete-task.ts
-│       ├── get-task.ts
-│       └── list-tasks.ts
+│   ├── demo/          # Demo routes for testing plugins
+│   ├── storage/       # KV, D1, R2 example routes
+│   └── tasks/         # Task CRUD routes
 └── schemas/           # Elysia type schemas for validation
     └── task.ts
 ```
@@ -82,9 +83,43 @@ export const MySchema = t.Object({
 
 ### Cloudflare Bindings
 
-- Worker bindings (KV, D1, R2, etc.) are configured in `wrangler.jsonc`
+- Worker bindings are configured in `wrangler.jsonc`
 - Types are generated with `bun run cf-typegen` into `worker-configuration.d.ts`
-- Access bindings via the Elysia context (configured through CloudflareAdapter)
+- Access bindings via `env` in the Elysia context
+
+**Available bindings:**
+
+- `env.KV` - KVNamespace for key-value storage
+- `env.DB` - D1Database for SQL queries
+- `env.BUCKET` - R2Bucket for object storage
+
+### Plugins
+
+KV-powered plugins using Elysia macros. Enable per-route by adding the macro option:
+
+**Cache Plugin** (`src/plugins/cache.ts`):
+
+```typescript
+import { cachePlugin } from "./plugins/cache";
+
+new Elysia()
+  .use(cachePlugin())
+  .get("/data", () => getData(), { cache: 300 }) // Cache 300s
+  .get("/fresh", () => getData()); // No cache (macro not defined)
+```
+
+**Rate Limit Plugin** (`src/plugins/rate-limit.ts`):
+
+```typescript
+import { rateLimitPlugin } from "./plugins/rate-limit";
+
+new Elysia()
+  .use(rateLimitPlugin())
+  .get("/api", () => getData(), { rateLimit: { max: 100, window: 60 } })
+  .get("/public", () => getData()); // No limit (macro not defined)
+```
+
+**Note:** KV minimum TTL is 60 seconds.
 
 ## Git Hooks
 
@@ -110,7 +145,7 @@ refactor: code refactoring
 ## Development Workflow
 
 1. Start dev server: `bun run dev`
-2. View API docs: `http://localhost:8789/docs`
+2. View API docs: `http://localhost:8787/docs`
 3. Make changes (hot reload enabled)
 4. Commit (hooks run automatically)
 5. Deploy: `bun run deploy`

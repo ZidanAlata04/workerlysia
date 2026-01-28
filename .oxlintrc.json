@@ -12,6 +12,7 @@
       {
         "allowArrowFunctions": true
       }
-    ]
+    ],
+    "max-statements": "off"
   }
 }
