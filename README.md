@@ -42,7 +42,7 @@ cp .env.example .env
 bun run dev
 ```
 
-Open [http://localhost:8787/docs](http://localhost:8787/docs) to see the Swagger UI 🎉
+Open [http://localhost:8787/docs](http://localhost:8787/docs) to see the API docs - Scalar UI 🎉
 
 ### Deploy
 
