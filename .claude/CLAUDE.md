@@ -33,7 +33,7 @@ src/
 │   └── rate-limit.ts  # Rate limiting with KV
 ├── routes/            # API route handlers (one file per endpoint)
 │   ├── demo/          # Demo routes for testing plugins
-│   ├── storage/       # KV, D1, R2 example routes
+│   ├── storage/       # KV example routes
 │   └── tasks/         # Task CRUD routes
 └── schemas/           # Elysia type schemas for validation
     └── task.ts
@@ -90,8 +90,6 @@ export const MySchema = t.Object({
 **Available bindings:**
 
 - `env.KV` - KVNamespace for key-value storage
-- `env.DB` - D1Database for SQL queries
-- `env.BUCKET` - R2Bucket for object storage
 
 ### Plugins
 

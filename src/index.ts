@@ -4,8 +4,6 @@ import { CloudflareAdapter } from "elysia/adapter/cloudflare-worker";
 
 import { cachedRoutes } from "./routes/demo/cached";
 import { rateLimitedRoutes } from "./routes/demo/rate-limited";
-import { bucketRoutes } from "./routes/storage/bucket";
-import { dbRoutes } from "./routes/storage/db";
 import { kvRoutes } from "./routes/storage/kv";
 import { createTaskRoute } from "./routes/tasks/create-task";
 import { deleteTaskRoute } from "./routes/tasks/delete-task";
@@ -37,8 +35,6 @@ const app = new Elysia({ adapter: CloudflareAdapter })
   .use(getTaskRoute)
   .use(deleteTaskRoute)
   .use(kvRoutes)
-  .use(dbRoutes)
-  .use(bucketRoutes)
   .use(cachedRoutes)
   .use(rateLimitedRoutes)
   .compile();

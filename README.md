@@ -69,7 +69,7 @@ src/
 │   └── rate-limit.ts     # Rate limiting with KV
 ├── routes/               # 📍 API route handlers
 │   ├── demo/             # Demo routes for plugins
-│   ├── storage/          # KV, D1, R2 example routes
+│   ├── storage/          # KV example routes
 │   └── tasks/            # Task CRUD routes
 └── schemas/              # 📐 Validation schemas (TypeBox)
     └── task.ts
@@ -161,9 +161,9 @@ const app = new Elysia({ adapter: CloudflareAdapter })
 
 ## ☁️ Cloudflare Bindings
 
-This starter includes pre-configured bindings for KV, D1, and R2.
+This starter includes a pre-configured KV binding.
 
-> **Important:** The `wrangler.jsonc` file contains placeholder IDs for bindings. You must replace these with your own IDs after creating the resources in your Cloudflare account.
+> **Important:** The `wrangler.jsonc` file contains a placeholder ID for the KV binding. You must replace it with your own ID after creating the resource in your Cloudflare account.
 
 To set up your own:
 
@@ -193,59 +193,6 @@ export const myRoute = new Elysia().get("/kv-example", async ({ env }) => {
   await env.KV.put("key", "value");
   const value = await env.KV.get("key");
   return { value };
-});
-```
-
-### D1 (SQL Database)
-
-```bash
-bunx wrangler d1 create my-database
-```
-
-Update `wrangler.jsonc` with the generated `database_id`:
-
-```jsonc
-{
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "my-database",
-      "database_id": "your-database-id",
-    },
-  ],
-}
-```
-
-**Usage:**
-
-```typescript
-export const myRoute = new Elysia().get("/db-example", async ({ env }) => {
-  const { results } = await env.DB.prepare("SELECT * FROM users").all();
-  return { users: results };
-});
-```
-
-### R2 (Object Storage)
-
-```bash
-bunx wrangler r2 bucket create my-bucket
-```
-
-Update `wrangler.jsonc`:
-
-```jsonc
-{
-  "r2_buckets": [{ "binding": "BUCKET", "bucket_name": "my-bucket" }],
-}
-```
-
-**Usage:**
-
-```typescript
-export const myRoute = new Elysia().get("/r2-example", async ({ env }) => {
-  await env.BUCKET.put("file.txt", "Hello, World!");
-  const object = await env.BUCKET.get("file.txt");
-  return { content: await object?.text() };
 });
 ```
 

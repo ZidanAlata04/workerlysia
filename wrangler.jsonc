@@ -21,27 +21,6 @@
     },
   ],
   /**
-   * D1 Databases
-   * https://developers.cloudflare.com/d1/
-   */
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "workerlysia-db",
-      "database_id": "aa666d62-2c97-46fe-b020-47492f70734e",
-    },
-  ],
-  /**
-   * R2 Buckets
-   * https://developers.cloudflare.com/r2/
-   */
-  "r2_buckets": [
-    {
-      "binding": "BUCKET",
-      "bucket_name": "workerlysia-bucket",
-    },
-  ],
-  /**
    * Smart Placement
    * https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
    */
