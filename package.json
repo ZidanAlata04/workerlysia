@@ -1,21 +1,42 @@
 {
-  "name": "cloudflare-workers-openapi",
+  "name": "workerlysia",
   "version": "0.0.1",
   "private": true,
+  "description": "A modern starter kit for building type-safe APIs with Elysia on Cloudflare Workers",
+  "homepage": "https://github.com/DobroslavRadosavljevic/workerlysia#readme",
+  "bugs": {
+    "url": "https://github.com/DobroslavRadosavljevic/workerlysia/issues"
+  },
+  "license": "MIT",
+  "author": "Dobroslav Radosavljevic <dobroslav.radosavljevic@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DobroslavRadosavljevic/workerlysia.git"
+  },
   "scripts": {
     "deploy": "wrangler deploy",
     "dev": "wrangler dev",
     "start": "wrangler dev",
-    "cf-typegen": "wrangler types"
+    "cf-typegen": "wrangler types",
+    "lint": "ultracite check",
+    "format": "ultracite fix",
+    "typecheck": "tsc --noEmit",
+    "prepare": "husky"
   },
   "dependencies": {
-    "chanfana": "^2.6.3",
-    "hono": "^4.6.20",
-    "zod": "^3.24.1"
+    "@elysiajs/openapi": "^1.4.14",
+    "elysia": "^1.4.22"
   },
   "devDependencies": {
-    "@types/node": "22.13.0",
+    "@commitlint/cli": "^20.3.1",
+    "@commitlint/config-conventional": "^20.3.1",
+    "@types/bun": "^1.3.7",
     "@types/service-worker-mock": "^2.0.4",
+    "husky": "^9.1.7",
+    "oxfmt": "^0.27.0",
+    "oxlint": "^1.42.0",
+    "typescript": "^5.9.3",
+    "ultracite": "7.1.1",
     "wrangler": "^4.61.0"
   }
 }

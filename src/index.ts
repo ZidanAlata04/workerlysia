@@ -1,26 +1,28 @@
-import { fromHono } from "chanfana";
-import { Hono } from "hono";
-import { TaskCreate } from "./endpoints/taskCreate";
-import { TaskDelete } from "./endpoints/taskDelete";
-import { TaskFetch } from "./endpoints/taskFetch";
-import { TaskList } from "./endpoints/taskList";
+import { openapi } from "@elysiajs/openapi";
+import { Elysia } from "elysia";
+import { CloudflareAdapter } from "elysia/adapter/cloudflare-worker";
 
-// Start a Hono app
-const app = new Hono<{ Bindings: Env }>();
+import { createTaskRoute } from "./routes/tasks/create-task";
+import { deleteTaskRoute } from "./routes/tasks/delete-task";
+import { getTaskRoute } from "./routes/tasks/get-task";
+import { listTasksRoute } from "./routes/tasks/list-tasks";
 
-// Setup OpenAPI registry
-const openapi = fromHono(app, {
-	docs_url: "/",
-});
+const app = new Elysia({ adapter: CloudflareAdapter })
+  .use(
+    openapi({
+      documentation: {
+        info: {
+          title: "Tasks API",
+          version: "1.0.0",
+        },
+      },
+      path: "/docs",
+    })
+  )
+  .use(listTasksRoute)
+  .use(createTaskRoute)
+  .use(getTaskRoute)
+  .use(deleteTaskRoute)
+  .compile();
 
-// Register OpenAPI endpoints
-openapi.get("/api/tasks", TaskList);
-openapi.post("/api/tasks", TaskCreate);
-openapi.get("/api/tasks/:taskSlug", TaskFetch);
-openapi.delete("/api/tasks/:taskSlug", TaskDelete);
-
-// You may also register routes for non OpenAPI directly on Hono
-// app.get('/test', (c) => c.text('Hono!'))
-
-// Export the Hono app
 export default app;
