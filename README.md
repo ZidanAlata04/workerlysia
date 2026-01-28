@@ -307,7 +307,7 @@ new Elysia()
 
 ## 📚 Resources
 
-- 📖 [Elysia Documentation](https://elysiajs.com/introduction.html)
+- 📖 [Elysia Documentation](https://elysiajs.com)
 - ☁️ [Cloudflare Workers Docs](https://developers.cloudflare.com/workers/)
 - 🔧 [Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/)
 - 📐 [TypeBox Schema](https://github.com/sinclairzx81/typebox)
