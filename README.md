@@ -161,7 +161,11 @@ const app = new Elysia({ adapter: CloudflareAdapter })
 
 ## ☁️ Cloudflare Bindings
 
-This starter includes pre-configured bindings for KV, D1, and R2. To set up your own:
+This starter includes pre-configured bindings for KV, D1, and R2.
+
+> **Important:** The `wrangler.jsonc` file contains placeholder IDs for bindings. You must replace these with your own IDs after creating the resources in your Cloudflare account.
+
+To set up your own:
 
 ```bash
 # Login to Cloudflare (first time only)
